@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server"
+    "start": "nodemon server",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm start\" \"npm run client\""
   },
   "keywords": [],
   "author": "",
@@ -25,5 +27,8 @@
     "nodemon": "^2.0.6",
     "reactjs-popup": "^2.0.4",
     "validator": "^13.1.17"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
   }
 }
