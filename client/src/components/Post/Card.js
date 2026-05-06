@@ -37,12 +37,7 @@ const Card = ({ post }) => {
             <img
               src={
                 !isEmpty(usersData[0]) &&
-                usersData
-                  .map((user) => {
-                    if (user._id === post.posterId) return user.picture;
-                    else return null;
-                  })
-                  .join("")
+                (usersData.find((user) => user._id === post.posterId)?.picture || "")
               }
               alt="poster-pic"
             />
@@ -52,12 +47,7 @@ const Card = ({ post }) => {
               <div className="pseudo">
                 <h3>
                   {!isEmpty(usersData[0]) &&
-                    usersData
-                      .map((user) => {
-                        if (user._id === post.posterId) return user.pseudo;
-                        else return null;
-                      })
-                      .join("")}
+                    (usersData.find((user) => user._id === post.posterId)?.pseudo || "")}
                 </h3>
                 {post.posterId !== userData._id && (
                   <FollowHandler idToFollow={post.posterId} type={"card"} />

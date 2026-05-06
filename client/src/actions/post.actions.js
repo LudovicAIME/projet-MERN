@@ -29,7 +29,7 @@ export const getPosts = (num) => {
         dispatch({ type: GET_POSTS, payload: array });
         dispatch({ type: GET_ALL_POSTS, payload: res.data });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => dispatch({ type: GET_POST_ERRORS, payload: err.message }));
   };
 };
 
@@ -43,7 +43,8 @@ export const addPost = (data) => {
         } else {
           dispatch({ type: GET_POST_ERRORS, payload: "" });
         }
-      });
+      })
+      .catch((err) => dispatch({ type: GET_POST_ERRORS, payload: err.message }));
   };
 };
 
@@ -57,7 +58,7 @@ export const likePost = (postId, userId) => {
       .then((res) => {
         dispatch({ type: LIKE_POST, payload: { postId, userId } });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => dispatch({ type: GET_POST_ERRORS, payload: err.message }));
   };
 };
 
@@ -71,7 +72,7 @@ export const unlikePost = (postId, userId) => {
       .then((res) => {
         dispatch({ type: UNLIKE_POST, payload: { postId, userId } });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => dispatch({ type: GET_POST_ERRORS, payload: err.message }));
   };
 };
 
@@ -85,7 +86,7 @@ export const updatePost = (postId, message) => {
       .then((res) => {
         dispatch({ type: UPDATE_POST, payload: { message, postId } });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => dispatch({ type: GET_POST_ERRORS, payload: err.message }));
   };
 };
 
@@ -98,7 +99,7 @@ export const deletePost = (postId) => {
       .then((res) => {
         dispatch({ type: DELETE_POST, payload: { postId } });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => dispatch({ type: GET_POST_ERRORS, payload: err.message }));
   };
 };
 
@@ -110,9 +111,9 @@ export const addComment = (postId, commenterId, text, commenterPseudo) => {
       data: { commenterId, text, commenterPseudo },
     })
       .then((res) => {
-        dispatch({ type: ADD_COMMENT, payload: { postId } });
+        dispatch({ type: ADD_COMMENT, payload: { postId, post: res.data } });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => dispatch({ type: GET_POST_ERRORS, payload: err.message }));
   };
 };
 
@@ -126,7 +127,7 @@ export const editComment = (postId, commentId, text) => {
       .then((res) => {
         dispatch({ type: EDIT_COMMENT, payload: { postId, commentId, text } });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => dispatch({ type: GET_POST_ERRORS, payload: err.message }));
   };
 };
 
@@ -140,7 +141,7 @@ export const deleteComment = (postId, commentId) => {
       .then((res) => {
         dispatch({ type: DELETE_COMMENT, payload: { postId, commentId } });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => dispatch({ type: GET_POST_ERRORS, payload: err.message }));
   };
 };
 

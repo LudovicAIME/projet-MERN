@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server",
+    "start": "nodemon server --watch server.js --watch routes --watch controllers --watch middleware --watch models --watch utils --watch config/db.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm start\" \"npm run client\""
   },

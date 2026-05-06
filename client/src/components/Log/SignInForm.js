@@ -4,32 +4,23 @@ import axios from "axios";
 const SignInForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({ email: "", password: "" });
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const emailError = document.querySelector(".email.error");
-    const passwordError = document.querySelector(".password.error");
-
     axios({
       method: "post",
       url: `${process.env.REACT_APP_API_URL}api/user/login`,
       withCredentials: true,
-      data: {
-        email,
-        password,
-      },
+      data: { email, password },
     })
-      .then((res) => {
-        console.log(res);
-        if (res.data.errors) {
-          emailError.innerHTML = res.data.errors.email;
-          passwordError.innerHTML = res.data.errors.password;
-        } else {
-          window.location = "/";
-        }
+      .then(() => {
+        window.location = "/";
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response && err.response.data.errors) {
+          setErrors(err.response.data.errors);
+        }
       });
   };
 
@@ -44,7 +35,7 @@ const SignInForm = () => {
         onChange={(e) => setEmail(e.target.value)}
         value={email}
       />
-      <div className="email error"></div>
+      <div className="email error">{errors.email}</div>
       <br />
       <label htmlFor="password">Mot de passe</label>
       <br />
@@ -55,7 +46,7 @@ const SignInForm = () => {
         onChange={(e) => setPassword(e.target.value)}
         value={password}
       />
-      <div className="password error"></div>
+      <div className="password error">{errors.password}</div>
       <br />
       <input type="submit" value="Se connecter" />
     </form>

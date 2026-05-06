@@ -1,6 +1,6 @@
 import { GET_ALL_POSTS } from "../actions/post.actions";
 
-const initialState = {};
+const initialState = [];
 
 export default function allPostsReducer(state = initialState, action) {
   switch (action.type) {

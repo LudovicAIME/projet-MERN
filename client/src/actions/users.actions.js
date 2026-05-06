@@ -1,4 +1,5 @@
 import axios from "axios";
+import { GET_USER_ERRORS } from "./user.actions";
 
 export const GET_USERS = "GET_USERS";
 
@@ -9,6 +10,6 @@ export const getUsers = () => {
       .then((res) => {
         dispatch({ type: GET_USERS, payload: res.data });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => dispatch({ type: GET_USER_ERRORS, payload: err.message }));
   };
 };

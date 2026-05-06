@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addComment, getPosts } from "../../actions/post.actions";
+import { addComment } from "../../actions/post.actions";
 import FollowHandler from "../Profil/FollowHandler";
 import { isEmpty, timestampParser } from "../Utils";
 import EditDeleteComment from "./EditDeleteComment";
@@ -16,7 +16,6 @@ const CardComments = ({ post }) => {
 
     if (text) {
       dispatch(addComment(post._id, userData._id, text, userData.pseudo))
-        .then(() => dispatch(getPosts()))
         .then(() => setText(''));
     }
   };
@@ -37,12 +36,7 @@ const CardComments = ({ post }) => {
               <img
                 src={
                   !isEmpty(usersData[0]) &&
-                  usersData
-                    .map((user) => {
-                      if (user._id === comment.commenterId) return user.picture;
-                      else return null;
-                    })
-                    .join("")
+                  (usersData.find((user) => user._id === comment.commenterId)?.picture || "")
                 }
                 alt="commenter-pic"
               />

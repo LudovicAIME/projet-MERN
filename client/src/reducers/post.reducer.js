@@ -1,4 +1,5 @@
 import {
+  ADD_COMMENT,
   DELETE_COMMENT,
   DELETE_POST,
   EDIT_COMMENT,
@@ -8,12 +9,16 @@ import {
   UPDATE_POST,
 } from "../actions/post.actions";
 
-const initialState = {};
+const initialState = [];
 
 export default function postReducer(state = initialState, action) {
   switch (action.type) {
     case GET_POSTS:
       return action.payload;
+    case ADD_COMMENT:
+      return state.map((post) =>
+        post._id === action.payload.postId ? action.payload.post : post
+      );
     case LIKE_POST:
       return state.map((post) => {
         if (post._id === action.payload.postId) {

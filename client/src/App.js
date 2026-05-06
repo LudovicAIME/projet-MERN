@@ -5,6 +5,8 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { getUser } from "./actions/user.actions";
 
+axios.defaults.withCredentials = true;
+
 const App = () => {
   const [uid, setUid] = useState(null);
   const dispatch = useDispatch();
@@ -16,13 +18,13 @@ const App = () => {
         url: `${process.env.REACT_APP_API_URL}jwtid`,
         withCredentials: true,
       })
-        .then((res) => {
-          setUid(res.data);
-        })
-        .catch((err) => console.log("No token"));
+        .then((res) => setUid(res.data))
+        .catch(() => console.log("No token"));
     };
     fetchToken();
+  }, []);
 
+  useEffect(() => {
     if (uid) dispatch(getUser(uid));
   }, [uid, dispatch]);
 

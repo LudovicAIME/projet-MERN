@@ -10,6 +10,7 @@ const NewPostForm = () => {
   const [postPicture, setPostPicture] = useState(null);
   const [video, setVideo] = useState("");
   const [file, setFile] = useState();
+  const [formError, setFormError] = useState("");
   const userData = useSelector((state) => state.userReducer);
   const error = useSelector((state) => state.errorReducer.postError);
   const dispatch = useDispatch();
@@ -26,7 +27,7 @@ const NewPostForm = () => {
       dispatch(getPosts());
       cancelPost();
     } else {
-      alert("Veuillez entrer un message")
+      setFormError("Veuillez entrer un message");
     }
   };
  
@@ -41,29 +42,30 @@ const NewPostForm = () => {
     setPostPicture("");
     setVideo("");
     setFile("");
+    setFormError("");
   };
 
 
   useEffect(() => {
     if (!isEmpty(userData)) setIsLoading(false);
+  }, [userData]);
 
-    const handleVideo = () => {
-      let findLink = message.split(" ");
-      for (let i = 0; i < findLink.length; i++) {
-        if (
-          findLink[i].includes("https://www.yout") ||
-          findLink[i].includes("https://yout")
-        ) {
-          let embed = findLink[i].replace("watch?v=", "embed/");
-          setVideo(embed.split("&")[0]);
-          findLink.splice(i, 1);
-          setMessage(findLink.join(" "));
-          setPostPicture('');
-        }
+  useEffect(() => {
+    const findLink = message.split(" ");
+    for (let i = 0; i < findLink.length; i++) {
+      if (
+        findLink[i].includes("https://www.yout") ||
+        findLink[i].includes("https://yout")
+      ) {
+        let embed = findLink[i].replace("watch?v=", "embed/");
+        setVideo(embed.split("&")[0]);
+        findLink.splice(i, 1);
+        setMessage(findLink.join(" "));
+        setPostPicture('');
+        break;
       }
-    };
-    handleVideo();
-  }, [userData, message, video]);
+    }
+  }, [message]);
 
   return (
     <div className="post-container">
@@ -144,6 +146,7 @@ const NewPostForm = () => {
               </div>
               {!isEmpty(error.format) && <p>{error.format}</p>}
               {!isEmpty(error.maxSize) && <p>{error.maxSize}</p>}
+              {formError && <p className="error">{formError}</p>}
               <div className="btn-send">
                 {message || postPicture || video.length > 20 ? (
                   <button className="cancel" onClick={cancelPost}>

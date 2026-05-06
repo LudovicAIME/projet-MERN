@@ -1,14 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useDispatch } from "react-redux";
 import { deleteComment, editComment } from "../../actions/post.actions";
 import { UidContext } from "../AppContext";
 
 const EditDeleteComment = ({ comment, postId }) => {
-  const [isAuthor, setIsAuthor] = useState(false);
   const [edit, setEdit] = useState(false);
   const [text, setText] = useState("");
   const uid = useContext(UidContext);
   const dispatch = useDispatch();
+  const isAuthor = uid === comment.commenterId;
 
   const handleEdit = (e) => {
     e.preventDefault();
@@ -21,15 +21,6 @@ const EditDeleteComment = ({ comment, postId }) => {
   };
 
   const handleDelete = () => dispatch(deleteComment(postId, comment._id));
-
-  useEffect(() => {
-    const checkAuthor = () => {
-      if (uid === comment.commenterId) {
-        setIsAuthor(true);
-      }
-    };
-    checkAuthor();
-  }, [uid, comment.commenterId]);
 
   return (
     <div className="edit-comment">
