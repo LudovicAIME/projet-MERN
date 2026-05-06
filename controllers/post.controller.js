@@ -92,26 +92,20 @@ module.exports.likePost = async (req, res) => {
     return res.status(400).send("ID unknown : " + req.params.id);
 
   try {
-    await PostModel.findByIdAndUpdate(
+    const post = await PostModel.findByIdAndUpdate(
       req.params.id,
-      {
-        $addToSet: { likers: req.body.id },
-      },
-      { new: true })
-      .then((data) => res.send(data))
-      .catch((err) => res.status(500).send({ message: err }));
-
+      { $addToSet: { likers: req.body.id } },
+      { new: true }
+    );
     await UserModel.findByIdAndUpdate(
       req.body.id,
-      {
-        $addToSet: { likes: req.params.id },
-      },
-      { new: true })
-            .then((data) => res.send(data))
-            .catch((err) => res.status(500).send({ message: err }));
-    } catch (err) {
-        return res.status(400).send(err);
-    }
+      { $addToSet: { likes: req.params.id } },
+      { new: true }
+    );
+    res.send(post);
+  } catch (err) {
+    res.status(400).send(err);
+  }
 };
 
 module.exports.unlikePost = async (req, res) => {
@@ -119,26 +113,20 @@ module.exports.unlikePost = async (req, res) => {
     return res.status(400).send("ID unknown : " + req.params.id);
 
   try {
-    await PostModel.findByIdAndUpdate(
+    const post = await PostModel.findByIdAndUpdate(
       req.params.id,
-      {
-        $pull: { likers: req.body.id },
-      },
-      { new: true })
-            .then((data) => res.send(data))
-            .catch((err) => res.status(500).send({ message: err }));
-
+      { $pull: { likers: req.body.id } },
+      { new: true }
+    );
     await UserModel.findByIdAndUpdate(
       req.body.id,
-      {
-        $pull: { likes: req.params.id },
-      },
-      { new: true })
-            .then((data) => res.send(data))
-            .catch((err) => res.status(500).send({ message: err }));
-    } catch (err) {
-        return res.status(400).send(err);
-    }
+      { $pull: { likes: req.params.id } },
+      { new: true }
+    );
+    res.send(post);
+  } catch (err) {
+    res.status(400).send(err);
+  }
 };
 
 module.exports.commentPost = (req, res) => {
